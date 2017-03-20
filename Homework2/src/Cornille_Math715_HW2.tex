@@ -1,0 +1,145 @@
+\documentclass{article}
+
+\usepackage{myhw}
+\usepackage{mymacros}
+
+\newcommand\NoIndent[1]{%
+  \begingroup
+  \par
+  \parshape0
+  #1\par
+  \endgroup
+}
+
+\renewcommand\thesection{}
+\renewcommand\thesubsection{}
+
+\DeclareMathOperator{\Span}{span}
+
+\lhead{Math 715}
+\chead{Homework 2}
+
+\begin{document}
+
+\begin{enumerate}
+\NoIndent{\section{Variational Formulation}}
+
+	\item Suppose $u \in V$ is the solution to the following problem in its variational form
+		\begin{equation*}
+			b(u,v) = l(v) \qquad v \in V
+		\end{equation*}
+		where $b(u,v)$ is a bilindear form that maps $V \times V$ to $\mathbb{R}$.
+		$l$ is a linear operator that maps $V$ to $\mathbb{R}$.
+		Here $V$ is a Hilbert space.
+		To obtain a numerical solution, we use the Galerkin method, and search for a solution in a subspace
+		$V_h = \Span\left\{\phi_1,\phi_2,\dots,\phi_N\right\} \subset V$
+		\begin{equation*}
+			b(u_h,v) = l(v) \qquad v \in V_h
+		\end{equation*}
+		In the linear algebra form, it is written as
+		\begin{equation*}
+			\mat{A}\ccdot\arr{U} = \arr{F}
+		\end{equation*}
+		\begin{enumerate}
+			\item Find the specific form of $\mat{A}$ and $\arr{F}$.
+			\item If $b$ is symmetric, show $\mat{A}$ is symmetric.
+			\item Give the definnition of the coercivity condition,
+				and show if $b$ is coercive, $\mat{A}$ is positive definite.
+			\item Still assume $b$ is coercive and denote $M$ and $\gamma$ the bounded coefficient and
+				coercive coefficient, respectively, show
+				\begin{equation*}
+					\left\|u - u_h\right\| \leq \frac{M}{\gamma}\inf_{v\in V}\|u - v\|
+				\end{equation*}
+			\item For the following equation in $\Omega \in \mathbb{R}^2$
+				with zero Dirichlet boundary condition ($\Omega$ is compactly supported),
+				write down its variational form, determine the space $V$,
+				and show whether $b$ satisfied the coercivity condition.
+				Find $M$ and $\gamma$, respectively.
+				\begin{equation*}
+					-\divg(a\grad{u}) + cu = f
+				\end{equation*}
+				with $0 < \ushort{a} \leq a < \bar{a}$ and $0 \leq \ushort{c} \leq c < \bar{c}$.
+			\item For the problem above, if we choose $V_h$ to be a piecewise linear function space, show
+				\begin{equation*}
+					\left\|u - u_h\right\|_{H^1} = \bigO(h)
+				\end{equation*}
+				and that if $a$ is a constant and $c = 0$
+				\begin{equation*}
+					\left\|u - u_h\right\|_{L_2} = \bigO(h^2)
+				\end{equation*}
+			\item For the same equation in $\Omega \in \mathbb{R}^2$ with Neumann boundary contition
+				\begin{equation*}
+					\left.\partial_n u\right|_{\partial\Omega} = g
+				\end{equation*}
+				Write down its variational form, determine $V$,
+				and show whether $b$ satisfies the coercivity condition.
+		\end{enumerate}
+
+\NoIndent{\section{Euler-Bernoulli equation}}
+
+	\item Consider the Euler-Bernoulli equation
+		\begin{equation*}
+			\hopdf{4}{u}{x} = f(x) \qquad 0 < x < 1
+		\end{equation*}
+		It is used to describe the deflection of $u$ of a clamped beam
+		subject to a transversal force with intensity $f$.
+		\begin{enumerate}
+			\item Show the equivalent varational form would be to find $u$ such that
+				\begin{equation*}
+					\left<u'',v''\right> = \left<f,v\right> \qquad \forall v \in V
+				\end{equation*}
+				where $V = \left\{v:v\in C_1[0,1],v(0)=v'(0)=v(1)=v'(1)=0,
+					v\mathrm{\ piecewise\ continuous\ and\ bounded}\right\}$
+			\item For an interval, $I = [a,b]$, define $P_3(I) =
+				\left\{v:v(x) = c_0 + c_1 x + c_2 x^2 + c_3 x^3, x \in I\right\}$.
+				Show that $v \in P_3(I)$ is uniquely determined by the values
+				$v(a)$, $v'(a)$, $v(b)$, and $v'(b)$.
+				Find the corresponding local basis functions.
+				(Hint: count the nuber of degrees of freedom and use the values to fix the coefficients.)
+			\item Construct a finite-dimensional subspace $V_h$ consisting of
+				piecewise cubic polynomials on the mesh $0 = x_0 < x_1 < \cdots < x_{N+1} = 1$.
+			\item Derive the error estimate
+				\begin{equation*}
+					\left\|\left(u - u_h\right)''\right\|_2 \leq \left\|\left(u - v\right)''\right\|_2
+						\qquad \forall v \in V_h
+				\end{equation*}
+				You are given the estimate that cubic Hermite interpolation of $u$,
+				denoted as $I_h u \in V_h$, satisfies the following
+				\begin{equation*}
+					\left\|u''(x) - \left(I_h u\right)''(x)\right\| \lesssim
+						h^2\max_{0\leq\xi\leq 1}\left|u^{(4)}(\xi)\right|
+				\end{equation*}
+				show that
+				\begin{equation*}
+					\left\|\left(u - u_h\right)''\right\| \leq
+						Ch^2\max_{0\leq\xi\leq 1}\left|u^{(4)}(\xi)\right|
+				\end{equation*}
+			\item Write a computer program to solve
+				\begin{equation*}
+					\begin{cases}
+						\displaystyle\hoddf{4}{u}{x} = g(x) \\
+						u(0) = u'(0) = u'(1) = u'(1) = 0
+					\end{cases}
+				\end{equation*}
+				If we use
+				\begin{equation*}
+					g(x) = \hoddf{4}{}{x}\left(e^x x^2(1 - x)^2\right) =
+						e^x\left(x^4 + 14x^3 + 49x^2 + 32x - 12\right)
+				\end{equation*}
+				the exact solution is $u(x) = e^x x^2(1 - x)^2$.
+				\begin{enumerate}
+					\item Give a brief description of your algorithm, in particular,
+						the method you use to evaluate the load vector $\arr{b}$
+						(choose your favorite numerical integral method,
+						but make sure the error here is not too big,
+						and the error from $\mat{A}$ still dominates)
+					\item Tabulate the max-norm errors $e_N = \max\left|u_h(x_j) - u(x_j)\right|$
+						and show the numerical convergence order by performing linear regression of
+						$\log{e_N} \mathrm{\ vs\ } \log{N}$
+					\item Plot your finite element solution $u_h$ along with the real solution.
+					\item Attach your code.
+				\end{enumerate}
+		\end{enumerate}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,146 @@
+\documentclass{article}
+
+\usepackage{myhw}
+\usepackage{mymacros}
+
+\newcommand\NoIndent[1]{%
+  \begingroup
+  \par
+  \parshape0
+  #1\par
+  \endgroup
+}
+
+\renewcommand\thesection{}
+\renewcommand\thesubsection{}
+
+\lhead{Math 715}
+\chead{Homework 1}
+
+\begin{document}
+
+\begin{enumerate}
+\NoIndent{\section{Theoretical Background}}
+
+	\item $a$ is an unknown parameter.
+		On $\mathbb{R}^2$, find out the region where the following equation is
+		elliptic, hyperbolic, or parabolic, and study their dependence on $a$.
+		\begin{equation*}
+			(a+x)\hopdf{2}{u}{x} + 2xy\frac{\partial^2 u}{\partial x \partial y}
+				- y^2\hopdf{2}{u}{y} = 0
+		\end{equation*}
+
+\NoIndent{
+	To classify a second order PDE of the form
+	\begin{equation*}
+		a(x,y)\hopdf{2}{u}{x} + 2b(x,y)\frac{\partial^2 u}{\partial x \partial y} + c(x,y)\hopdf{2}{u}{y}
+	\end{equation*}
+	we must consider $b^2 - ac$.
+	For the given equation this yeilds $x^2 y^2 + (a+x)y^2$.
+	Thus the regions depend on the parameter $a$.
+	When $a > \frac{1}{4}$ the equation is hyperbolic everywhere.
+	When $a = \frac{1}{4}$ the equations is parabolic at $x = -\frac{1}{2}$ and hyperbolic elsewhere.
+	When $a < \frac{1}{4}$ then
+	\begin{equation*}
+		\begin{cases}
+			x = \displaystyle\frac{-1 \pm \sqrt{1-4a}}{2}  & \mathrm{parabolic} \\
+			\displaystyle\frac{-1 - \sqrt{1-4a}}{2} < x < \displaystyle\frac{-1 + \sqrt{1-4a}}{2}
+				& \mathrm{elliptic} \\
+			otherwise & \mathrm{hyperbolic}
+		\end{cases}
+	\end{equation*}
+}
+
+	\item We prove the maximum principle for the solution to the Poisson equation
+		\begin{equation*}
+			\begin{cases}
+				-\Delta u = f & \mathrm{in\ } \Omega \\
+				u = g & \mathrm{on\ } \partial\Omega
+			\end{cases}
+		\end{equation*}
+		Prove that there exists a constant $C$ depending only on $\Omega$ such that
+		\begin{equation*}
+			\max_{\bar{\Omega}}|u| \leq C\left(\max_{\partial\Omega}|g| + \max_{\bar{\Omega}}|f|\right)
+		\end{equation*}
+		Here $\Omega$ is a bounded open subset of $\mathbb{R}^n$ with $\Gamma$ being its boundary.
+		$\bar{\Omega} = \Omega \cup \partial\Omega$ is its closure.
+		Several hints:
+		\begin{enumerate}
+			\item You could use the following property:
+				assume $v$ is subharmonic, i.e.\ $-\Delta v \leq 0$ in $\Omega$, then
+				\begin{equation*}
+					v(x) \leq \frac{1}{V}\int_{B(x,r)}v(y)\d y
+				\end{equation*}
+				Here $B(x,y)$ is a ball centered at $x$ with radius r, and $V$ is the volume of the ball.
+				Given this, you could prove the maximum of $v$ is achieved at the boundary $\partial\Omega$.
+			\item Try to show the function $u + \displaystyle\frac{|x|^2}{2n}\lambda$ is subharmonic.
+			Here $\lambda = \displaystyle\max_{\bar{\Omega}}|f|$.
+		\end{enumerate}
+
+\NoIndent{
+	
+}
+
+\NoIndent{\section{Finite Differencing}}
+
+	\item \begin{enumerate}
+		\item Prove
+			$\Delta_- + \Delta_+ =
+				\left(\mathcal{E}^{-\frac{1}{2}} + \mathcal{E}^\frac{1}{2}\right)\Delta_0$
+			Here $\mathcal{E}$ is the shifting operator, $\left(\mathcal{E}u\right)_j = u_{j+1}$,
+			and the definitions for $\Delta_+$ and $\Delta_-$ are consistent with what we has in class.
+			$\left(\Delta_0 u\right)_j = u_{j+\frac{1}{2}} - u_{j-\frac{1}{2}}$
+		\item Determine the constants $c$ and $d$ so that
+			\begin{align*}
+				\partial_x^2 u(x) - \frac{1}{h^2}\left(\Delta_+^2 - \Delta_+^3\right)u(x)
+					&= ch^2\partial_x^4 u(x) + \bigO(h^3) \\
+				\partial_x^2 u(x) - \frac{1}{h^2}\Delta_0^2 u(x) &= dh^2\partial_x^4 u(x) + \bigO(h^4)
+			\end{align*}
+			Here we assume $u(x)$ is smooth enough.
+		\item The two identities above tell you how to approximate $\partial_x^2$
+			using forward differencing and central differencing.
+			How many grid points do you need to get the second order approximation
+			respectively using these two methods?
+	\end{enumerate}
+
+	\item Write a computer code (using your favorite language) to determine, to highest possible order,
+		a finite difference approximation to $u''(x)$ based on the 5-point stencil
+		$\{x-h,x-\frac{1}{2}h,x,x+h,x+2h\}$
+		\begin{equation*}
+			u''(x) \approx
+				c_0 u(x-h) + c_1 u\left(x-\frac{h}{2}\right) + c_2 u(x) + c_3 u(x+h) + c_4 u(x+2h)
+		\end{equation*}
+		\begin{enumerate}
+			\item Compute $c_j$.
+			\item Check the order.
+		\end{enumerate}
+
+\NoIndent{Finite difference method for an elliptic equation}
+
+	\item We used Fourier method for stability analysis in 1D in class.
+		Carry out the same analysis for 2D.
+
+	\item Derive the expldit formulae for Green's functions in 1D
+		and prove they are piecewise linear function.
+
+	\item In 2D, to compute the Poisson equation, $u'' = f$
+		with zero boundary condition on a rectangular domain,
+		we discretize the domain by even grid points with mesh size $h$.
+		Denote $A$ the associated discretization matrix with central differencing (5-stencil).
+		Show $||A^{-1}||_\infty$ is bounded independent of $h$.
+		Explain why it suggests that the order of accuracy of the numerical method is second order.
+		(Hint:
+			(a) $\left\|A^{-1}\right\|_\infty =
+				\displaystyle\sup\frac{\left\|A^{-1}v\right\|_\infty}{\left\|v\right\|_\infty}$.
+			(b) Fundeamental theorem for numerical convergence.)
+
+	\item Prove the discrete version of the Poincar\'e inequality,
+		\begin{equation*}
+			\sum_{m,n}\left|U_{m,n}\right|^2 \leq \sum_{m,n}\left|\partial_x U_{m,n}\right|^2
+		\end{equation*}
+		Here $U$ is a matrix on 2D with zero boundary condition,
+		and $\partial_x U_{m,n}$ is the forward Euler representation of differentiation,
+		definde by, $\partial_x U_{m,n} = \frac{1}{h}\left(U_{m+1,n} - U_{m,n}\right)$.
+\end{enumerate}
+
+\end{document}
