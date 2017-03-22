@@ -71,13 +71,18 @@
 				\begin{equation*}
 					v(x) \leq \frac{1}{V}\int_{B(x,r)}v(y)\d y
 				\end{equation*}
-				Here $B(x,y)$ is a ball centered at $x$ with radius r, and $V$ is the volume of the ball.
+				Here $B(x,r)$ is a ball centered at $x$ with radius r, and $V$ is the volume of the ball.
 				Given this, you could prove the maximum of $v$ is achieved at the boundary $\partial\Omega$.
 			\item Try to show the function $u + \displaystyle\frac{|x|^2}{2n}\lambda$ is subharmonic.
 			Here $\lambda = \displaystyle\max_{\bar{\Omega}}|f|$.
 		\end{enumerate}
 
 \NoIndent{
+	Assume $v$ is subharmonic, then
+	\begin{equation*}
+		v(x) \leq \frac{1}{V}\int_{B(x,r)}v(y)\d y
+	\end{equation*}
+	This implies that the maximum of $v$ is achieved at the boundary $\partial\Omega$.
 	
 }
 
