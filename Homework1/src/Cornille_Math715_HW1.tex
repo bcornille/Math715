@@ -38,6 +38,7 @@
 	we must consider $b^2 - ac$.
 	For the given equation this yeilds $x^2 y^2 + (a+x)y^2$.
 	Thus the regions depend on the parameter $a$.
+	When $y = 0$ the equation is always parabolic.
 	When $a > \frac{1}{4}$ the equation is hyperbolic everywhere.
 	When $a = \frac{1}{4}$ the equations is parabolic at $x = -\frac{1}{2}$ and hyperbolic elsewhere.
 	When $a < \frac{1}{4}$ then
@@ -83,7 +84,7 @@
 		v(x) \leq \frac{1}{V}\int_{B(x,r)}v(y)\d y
 	\end{equation*}
 	This implies that the maximum of $v$ is achieved at the boundary $\partial\Omega$.
-	
+	 
 }
 
 \NoIndent{\section{Finite Differencing}}
@@ -92,9 +93,35 @@
 		\item Prove
 			$\Delta_- + \Delta_+ =
 				\left(\mathcal{E}^{-\frac{1}{2}} + \mathcal{E}^\frac{1}{2}\right)\Delta_0$
+			and $\Delta_-\Delta_+ = \Delta_0^2$.
 			Here $\mathcal{E}$ is the shifting operator, $\left(\mathcal{E}u\right)_j = u_{j+1}$,
 			and the definitions for $\Delta_+$ and $\Delta_-$ are consistent with what we has in class.
 			$\left(\Delta_0 u\right)_j = u_{j+\frac{1}{2}} - u_{j-\frac{1}{2}}$
+\NoIndent{
+	First consider the left-hand side of the first relation.
+	\begin{equation*}
+		\left(\Delta_- + \Delta_+\right)u_i = u_i - u_{i-1} + u_{i+1} - u_i = u_{i+1} - u_{i-1}
+	\end{equation*}
+	Then, the right-hand side of the first relation.
+	\begin{equation*}
+		\left(\mathcal{E}^{-\frac{1}{2}} + \mathcal{E}^\frac{1}{2}\right)\Delta_0 u_i =
+			\left(\mathcal{E}^{-\frac{1}{2}} + \mathcal{E}^\frac{1}{2}\right)
+				\left(u_{i+\frac{1}{2}} - u_{i-\frac{1}{2}}\right) =
+			u_i + u_{i+1} - u_{i-1} - u_i = u_{i+1} - u_{i-1}
+	\end{equation*}
+	Thus, the two operators are equal.
+	Next, consider the left-hand side of the second relation.
+	\begin{equation*}
+		\Delta_-\Delta_+ u_i = \Delta_-\left(u_{i+1} - u_i\right) = u_{i+1} - u_i - u_i + u_{i-1} =
+			u_{i+1} - 2u_i + u_{i-1}
+	\end{equation*}
+	Then, the right-had side of the second relation.
+	\begin{equation*}
+		\Delta_0^2 u_i = \Delta_0\left(u_{i+\frac{1}{2}} - u_{i-\frac{1}{2}}\right) =
+			u_{i+1} - u_i - u_i + u_{i-1} = u_{i+1} - 2u_i + u_{i-1}
+	\end{equation*}
+	Thus, the two operators are equal.
+}
 		\item Determine the constants $c$ and $d$ so that
 			\begin{align*}
 				\partial_x^2 u(x) - \frac{1}{h^2}\left(\Delta_+^2 - \Delta_+^3\right)u(x)
@@ -102,10 +129,43 @@
 				\partial_x^2 u(x) - \frac{1}{h^2}\Delta_0^2 u(x) &= dh^2\partial_x^4 u(x) + \bigO(h^4)
 			\end{align*}
 			Here we assume $u(x)$ is smooth enough.
+\NoIndent{
+	First, we will determine $c$.
+	\begin{align*}
+		\partial_x^2 u(x) - \frac{1}{h^2}&\left(\Delta_+^2 - \Delta_+^3\right)u(x)  \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[u(x+2h) - 2u(x+h) + u(x) - u(x+3h) + 3u(x+2h) - 3u(x+h) + u(x)\right] \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[2u(x) - 5u(x+h) + 4u(x+2h) - u(x+3h)\right] \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[2u(x) -
+					5\left[u(x) + h\partial_x u(x) + \frac{h^2}{2}\partial_x^2 u(x) + \frac{h^3}{6}\partial_x^3 u(x) +
+						\frac{h^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right. \\
+				&\left. + 4\left[u(x) + 2h\partial_x u(x) + \frac{(2h)^2}{2}\partial_x^2 u(x) + \frac{(2h)^3}{6}\partial_x^3 u(x) +
+						\frac{(2h)^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right. \\
+				&\left. - \left[u(x) + 3h\partial_x u(x) + \frac{(3h)^2}{2}\partial_x^2 u(x) + \frac{(3h)^3}{6}\partial_x^3 u(x) +
+						\frac{(3h)^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right]  \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[h^2\partial_x^2 u(x) - \frac{22}{24}h^4\partial_x^4 u(x) + \bigO(h^5)\right]
+			= \frac{11}{12}h^2\partial_x^4 u(x) + \bigO(h^3)
+	\end{align*}
+	Thus, $c=\frac{11}{12}$.
+	Next, determine $d$.
+	\begin{align*}
+		\partial_x^2 u(x) - \frac{1}{h^2}\Delta_0^2 u(x) &= \partial_x^2 u(x) - \frac{1}{h^2}\left[u(x+h) - 2u(x) + u(x-h)\right] \\
+			&= \partial_x^2 u(x) - \frac{1}{h^2}\left[u(x) + h\partial_x u(x) + \frac{h^2}{2}\partial_x^2 u(x) + \frac{h^3}{6}\partial_x^3 u(x) +
+					\frac{h^4}{24}\partial_x^4 u(x) + \frac{h^5}{120}\partial_x^5 u(x) + \bigO(h^6)\right. \\
+				&\left.- 2u(x) + u(x) - h\partial_x u(x) + \frac{h^2}{2}\partial_x^2 u(x) - \frac{h^3}{6}\partial_x^3 u(x) +
+					\frac{h^4}{24}\partial_x^4 u(x) - \frac{h^5}{120}\partial_x^5 u(x) + \bigO(h^6)\right] \\
+			&= \partial_x^2 u(x) - \frac{1}{h^2}\left[h^2\partial_x^2 u(x) + \frac{2}{24}h^4\partial_x^4 u(x) + \bigO(h^6)\right]
+			= -\frac{1}{12}h^2\partial_x^4 u(x) + \bigO(h^4)
+	\end{align*}
+	Thus, $d=-\frac{1}{12}$.
+}
 		\item The two identities above tell you how to approximate $\partial_x^2$
 			using forward differencing and central differencing.
 			How many grid points do you need to get the second order approximation
 			respectively using these two methods?
+\NoIndent{
+	For forward differencing, you need 4 points to get a second-order approximation of $\partial_x^2$.
+	Whereas, for central differencing, you only need 3 points to get a second-order approximation of $\partial_x^2$.
+}
 	\end{enumerate}
 
 	\item Write a computer code (using your favorite language) to determine, to highest possible order,
@@ -120,7 +180,52 @@
 			\item Check the order.
 		\end{enumerate}
 
-\NoIndent{Finite difference method for an elliptic equation}
+\NoIndent{
+	The linear system that must be solved is
+	\begin{equation*}
+		\begin{bmatrix}
+			 1 & 1 & 1 & 1 & 1 \\
+			 -1 & -\frac{1}{2} & 0 & 1 & 2 \\
+			 1 & \frac{1}{4} & 0 & 1 & 4 \\
+			 -1 & -\frac{1}{8} & 0 & 1 & 8 \\
+			 1 & \frac{1}{16} & 0 & 1 & 16
+		\end{bmatrix}
+		\begin{bmatrix}
+			c_0 \\
+			c_1 \\
+			c_2 \\
+			c_3 \\
+			c_4
+		\end{bmatrix} =
+		\begin{bmatrix}
+			0 \\
+			0 \\
+			\frac{2}{h^2} \\
+			0 \\
+			0
+		\end{bmatrix}
+	\end{equation*}
+	The solution to this linear system is
+	\begin{equation*}
+		\begin{bmatrix}
+			c_0 \\
+			c_1 \\
+			c_2 \\
+			c_3 \\
+			c_4
+		\end{bmatrix} = \frac{1}{h^2}
+		\begin{bmatrix}
+			\frac{1}{3} \\
+			\frac{32}{15} \\
+			-4 \\
+			\frac{5}{3} \\
+			-\frac{2}{15}
+		\end{bmatrix}
+	\end{equation*}
+	This method is $\bigO(h^3)$.
+}
+
+\NoIndent{\section{Finite difference method for an elliptic equation}}
 
 	\item We used Fourier method for stability analysis in 1D in class.
 		Carry out the same analysis for 2D.
