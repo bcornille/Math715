@@ -42,23 +42,90 @@
 		\end{equation*}
 		\begin{enumerate}
 			\item Find the specific form of $\mat{A}$ and $\arr{F}$.
+\NoIndent{
+	\begin{equation*}
+		\left(\mat{A}\right)_{i,j} = b\left(\phi_j,\phi_i\right)
+	\end{equation*}
+	and
+	\begin{equation*}
+		\left(\arr{F}\right)_i = l\left(\phi_i\right)
+	\end{equation*}
+}
 			\item If $b$ is symmetric, show $\mat{A}$ is symmetric.
+\NoIndent{
+	Assume $b$ is symmetric, i.e.\ $b\left(\phi_j,\phi_i\right) = b\left(\phi_i,\phi_j\right)$.
+	Then $\left(\mat{A}\right)_{i,j} = \left(\mat{A}\right)_{j,i}$, i.e.\ $\mat{A} = \mat{A}^T$,
+	so $\mat{A}$ is symmetric.
+}
 			\item Give the definnition of the coercivity condition,
 				and show if $b$ is coercive, $\mat{A}$ is positive definite.
+\NoIndent{
+	Assume $b$ is coercive, i.e.\ $\gamma\|u\|^2 \leq b(u,u)$.
+	We can transform the basis,
+	$\phi_1,\phi_2,\dots,\phi_N \rightarrow \tilde{\phi}_1,\tilde{\phi}_2,\dots,\tilde{\phi_N}$,
+	such that $b\left(\tilde{\phi}_j,\tilde{\phi}_i\right) = 0$ for $i \neq j$,
+	which is equivalent to diagonalizing $\mat{A}$.
+	(We know that $\mat{A}$ is diagonalizable since our problem is well-posed,
+	thus $\mat{A}$ is invertible.)
+	Now with this diagonalized basis set, the eigenvalues of $\mat{A}$ are
+	$\lambda_i = b\left(\tilde{\phi}_i,\tilde{\phi}_i\right)
+		\geq \gamma\left\|\tilde{\phi}_i\right\|^2 > 0$.
+	Therefore, $\mat{A}$ is positive definite.
+}
 			\item Still assume $b$ is coercive and denote $M$ and $\gamma$ the bounded coefficient and
 				coercive coefficient, respectively, show
 				\begin{equation*}
-					\left\|u - u_h\right\| \leq \frac{M}{\gamma}\inf_{v\in V}\|u - v\|
+					\left\|u - u_h\right\| \leq \frac{M}{\gamma}\inf_{v\in V_h}\|u - v\|
 				\end{equation*}
+\NoIndent{
+	Assume $b$ is coercive and bounded, i.e.\ $\gamma\|u\|^2 \leq b(u,u)$ and $b(u,v) \leq M \|u\|\|v\|$.
+	Using $b\left(u-u_h,v\right) = 0$ $\forall v \in V_h$, it can be shown that
+	$b\left(u-u_h,u-v\right) = b\left(u-u_h,u-u_h\right)$.
+	Then,
+	\begin{align*}
+		\gamma\left\|u-u_h\right\|^2 \leq b\left(u-u_h,u-u_h\right) &= b\left(u-u_h,u-v\right)
+			\leq M \left\|u-u_h\right\|\|u-v\| \qquad \forall v \in V_h \\
+		\left\|u - u_h\right\| &\leq \frac{M}{\gamma}\inf_{v\in V_h}\|u - v\|
+	\end{align*}
+}
 			\item For the following equation in $\Omega \in \mathbb{R}^2$
 				with zero Dirichlet boundary condition ($\Omega$ is compactly supported),
 				write down its variational form, determine the space $V$,
-				and show whether $b$ satisfied the coercivity condition.
+				and show whether $b$ satisfies the coercivity condition.
 				Find $M$ and $\gamma$, respectively.
 				\begin{equation*}
 					-\divg(a\grad{u}) + cu = f
 				\end{equation*}
 				with $0 < \ushort{a} \leq a < \bar{a}$ and $0 \leq \ushort{c} \leq c < \bar{c}$.
+\NoIndent{
+	Find some $u \in H_0^1$ such that
+	\begin{equation*}
+		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> \qquad \forall v \in H_0^1
+	\end{equation*}
+	i.e.
+	\begin{equation*}
+		b(u,v) = \left<a\grad{u},\grad{v}\right> + \left<cu,v\right>
+	\end{equation*}
+	To check coercivity,
+	\begin{equation*}
+		b(u,u) = \left<a\grad{u},\grad{u}\right> + \left<cu,u\right> \geq
+			\ushort{a}\left<\grad{u},\grad{u}\right> + \ushort{c}\left<u,u\right> =
+			\ushort{a}\|u\|_{H^1}^2 + \left(\ushort{c}-\ushort{a}\right)\|u\|_{L^2}^2 \geq
+			\left(\ushort{a}+\ushort{c}\right)\|u\|_{H^1}^2
+	\end{equation*}
+	so $\gamma = \ushort{a}+\ushort{c}$.
+	For the bounded condition,
+	\begin{equation*}
+		b(u,v) = \left<a\grad{u},\grad{v}\right> + \left<cu,v\right> \leq
+			\bar{a}\left<\grad{u},\grad{v}\right> + \bar{c}\left<u,v\right>
+	\end{equation*}
+	noting that $\left<\grad{u},\grad{v}\right> \leq \|u\|_{H^1}\|v\|_{H^1}$
+	and $\left<u,v\right> \leq \|u\|_{H^1}\|v\|_{H^1}$,
+	\begin{equation*}
+		b(u,v) \leq \left(\bar{a}+\bar{c}\right)\|u\|_{H^1}\|v\|_{H^1}
+	\end{equation*}
+	so $M = \bar{a}+\bar{c}$.
+}
 			\item For the problem above, if we choose $V_h$ to be a piecewise linear function space, show
 				\begin{equation*}
 					\left\|u - u_h\right\|_{H^1} = \bigO(h)
@@ -67,6 +134,18 @@
 				\begin{equation*}
 					\left\|u - u_h\right\|_{L_2} = \bigO(h^2)
 				\end{equation*}
+\NoIndent{
+	Using $b$ is coercive and bounded along with previous analysis, it can be shown that
+	\begin{equation*}
+		\left\|u - u_h\right\|_{H^1} \leq \frac{M}{\gamma}\|u - v\|_{H^1} \qquad \forall v \in V_h
+	\end{equation*}
+	Simply pick $v = Iu$, where $Iu$ is the interpolation of $u$
+	using piecewise linear functions ($Iu \in V-h$).
+	Then
+	\begin{equation*}
+		\left\|u - u_h\right\|_{H^1} \leq \frac{M}{\gamma}\|u - Iu\|_{H^1} = \bigO(h)
+	\end{equation*}
+}
 			\item For the same equation in $\Omega \in \mathbb{R}^2$ with Neumann boundary contition
 				\begin{equation*}
 					\left.\partial_n u\right|_{\partial\Omega} = g

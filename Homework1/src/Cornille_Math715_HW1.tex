@@ -133,16 +133,21 @@
 	First, we will determine $c$.
 	\begin{align*}
 		\partial_x^2 u(x) - \frac{1}{h^2}&\left(\Delta_+^2 - \Delta_+^3\right)u(x)  \\
-			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[u(x+2h) - 2u(x+h) + u(x) - u(x+3h) + 3u(x+2h) - 3u(x+h) + u(x)\right] \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&
+				\left[u(x+2h) - 2u(x+h) + u(x) - u(x+3h) + 3u(x+2h) - 3u(x+h) + u(x)\right] \\
 			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[2u(x) - 5u(x+h) + 4u(x+2h) - u(x+3h)\right] \\
 			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[2u(x) -
-					5\left[u(x) + h\partial_x u(x) + \frac{h^2}{2}\partial_x^2 u(x) + \frac{h^3}{6}\partial_x^3 u(x) +
-						\frac{h^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right. \\
-				&\left. + 4\left[u(x) + 2h\partial_x u(x) + \frac{(2h)^2}{2}\partial_x^2 u(x) + \frac{(2h)^3}{6}\partial_x^3 u(x) +
-						\frac{(2h)^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right. \\
-				&\left. - \left[u(x) + 3h\partial_x u(x) + \frac{(3h)^2}{2}\partial_x^2 u(x) + \frac{(3h)^3}{6}\partial_x^3 u(x) +
-						\frac{(3h)^4}{24}\partial_x^4 u(x) + \bigO(h^5)\right]\right]  \\
-			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[h^2\partial_x^2 u(x) - \frac{22}{24}h^4\partial_x^4 u(x) + \bigO(h^5)\right]
+					5\left[u(x) + h\partial_x u(x) + \frac{h^2}{2}\partial_x^2 u(x) +
+					\frac{h^3}{6}\partial_x^3 u(x) + \frac{h^4}{24}\partial_x^4 u(x) +
+					\bigO(h^5)\right]\right. \\
+				&\left. + 4\left[u(x) + 2h\partial_x u(x) + \frac{(2h)^2}{2}\partial_x^2 u(x) +
+					\frac{(2h)^3}{6}\partial_x^3 u(x) + \frac{(2h)^4}{24}\partial_x^4 u(x) +
+					\bigO(h^5)\right]\right. \\
+				&\left. - \left[u(x) + 3h\partial_x u(x) + \frac{(3h)^2}{2}\partial_x^2 u(x) +
+					\frac{(3h)^3}{6}\partial_x^3 u(x) + \frac{(3h)^4}{24}\partial_x^4 u(x) +
+					\bigO(h^5)\right]\right]  \\
+			= \partial_x^2 u(x) - \frac{1}{h^2}&\left[h^2\partial_x^2 u(x) -
+				\frac{22}{24}h^4\partial_x^4 u(x) + \bigO(h^5)\right]
 			= \frac{11}{12}h^2\partial_x^4 u(x) + \bigO(h^3)
 	\end{align*}
 	Thus, $c=\frac{11}{12}$.
