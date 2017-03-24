@@ -57,7 +57,7 @@
 	Then $\left(\mat{A}\right)_{i,j} = \left(\mat{A}\right)_{j,i}$, i.e.\ $\mat{A} = \mat{A}^T$,
 	so $\mat{A}$ is symmetric.
 }
-			\item Give the definnition of the coercivity condition,
+			\item Give the definition of the coercivity condition,
 				and show if $b$ is coercive, $\mat{A}$ is positive definite.
 \NoIndent{
 	Assume $b$ is coercive, i.e.\ $\gamma\|u\|^2 \leq b(u,u)$.
@@ -153,6 +153,13 @@
 				Write down its variational form, determine $V$,
 				and show whether $b$ satisfies the coercivity condition.
 		\end{enumerate}
+\NoIndent{
+	The variational form is find some $u \in H^1$
+	\begin{equation*}
+		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> + \int_{\partial\Omega}gv\d{S} \qquad \forall v \in H^1
+	\end{equation*}
+	The bilinear form $b$ is the same as in part (e) so the coercivity proven there still holds.
+}
 
 \NoIndent{\section{Euler-Bernoulli equation}}
 
