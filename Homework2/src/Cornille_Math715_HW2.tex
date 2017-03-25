@@ -191,8 +191,63 @@
 				$v(a)$, $v'(a)$, $v(b)$, and $v'(b)$.
 				Find the corresponding local basis functions.
 				(Hint: count the nuber of degrees of freedom and use the values to fix the coefficients.)
+\NoIndent{
+	There are 4 degrees of freedom and 4 constraints, so $v \in P_3(I)$ can be uniquely determined.
+	They can be determined by solving the linear system
+	\begin{equation*}
+		\begin{bmatrix}
+			1 & a & a^2 & a^3 \\
+			0 & 1 & 2a & 3a^2 \\
+			1 & b & b^2 & b^3 \\
+			0 & 1 & 2b & 3b^2
+		\end{bmatrix}
+		\begin{bmatrix}
+			c_0 \\
+			c_1 \\
+			c_2 \\
+			c_3
+		\end{bmatrix} =
+		\begin{bmatrix}
+			v(a) \\
+			v'(a) \\
+			v(b) \\
+			v'(b)
+		\end{bmatrix}
+	\end{equation*}
+	To produce local basis functions we can produce a single set of basis functions for a reference element.
+	This reference element will have $I = [0,1]$ and the basis functions will have a value of 1 at one of
+	$v(0)$, $v'(0)$, $v(1)$, and $v'(1)$ with 0 at the others and will be denoted
+	$h_{00}$, $h_{10}$, $h_{01}$, and $h_{11}$.
+	\begin{table}[h]
+		\caption{Basis functions of the reference element.}
+		\label{tab:hbasis}
+		\centering
+	
+		\begin{tabular}{c|c}
+		\hline
+	
+		\hline
+		\textbf{Basis Function} & \textbf{Definition} \\
+		\hline
+			$h_{00}(x)$ & $2x^3 - 3x^2 + 1$ \\
+			$h_{10}(x)$ & $x^3 - 2x^2 + x$ \\
+			$h_{01}(x)$ & $-2x^3 + 3x^2$ \\
+			$h_{11}(x)$ & $x^3 - x^2$ \\
+		\hline
+	
+		\hline
+		\end{tabular}
+	\end{table}
+}
 			\item Construct a finite-dimensional subspace $V_h$ consisting of
 				piecewise cubic polynomials on the mesh $0 = x_0 < x_1 < \cdots < x_{N+1} = 1$.
+\NoIndent{
+	A coordinate transformation, $\mathcal{F}:\hat{x}\rightarrow x$,
+	will be used to produce local basis functions from the reference set defined in part (b).
+	This transformation can be explicitly written out in the affine mapping of
+	$\hat{I} = [0,1] \xrightarrow{\mathcal{F}} I = [a,b]$ as $\mathcal{F}(\hat{x}) = (b-a)x + a$.
+	Using this change of variables also allows integration over the reference element.
+}
 			\item Derive the error estimate
 				\begin{equation*}
 					\left\|\left(u - u_h\right)''\right\|_2 \leq \left\|\left(u - v\right)''\right\|_2
