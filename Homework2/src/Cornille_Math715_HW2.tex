@@ -98,9 +98,9 @@
 				\end{equation*}
 				with $0 < \ushort{a} \leq a < \bar{a}$ and $0 \leq \ushort{c} \leq c < \bar{c}$.
 \NoIndent{
-	Find some $u \in H_0^1$ such that
+	Find some $u \in H_0^1(\Omega)$ such that
 	\begin{equation*}
-		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> \qquad \forall v \in H_0^1
+		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> \qquad \forall v \in H_0^1(\Omega)
 	\end{equation*}
 	i.e.
 	\begin{equation*}
@@ -109,11 +109,10 @@
 	To check coercivity,
 	\begin{equation*}
 		b(u,u) = \left<a\grad{u},\grad{u}\right> + \left<cu,u\right> \geq
-			\ushort{a}\left<\grad{u},\grad{u}\right> + \ushort{c}\left<u,u\right> =
-			\ushort{a}\|u\|_{H^1}^2 + \left(\ushort{c}-\ushort{a}\right)\|u\|_{L^2}^2 \geq
-			\left(\ushort{a}+\ushort{c}\right)\|u\|_{H^1}^2
+			\ushort{a}\left<\grad{u},\grad{u}\right> + \ushort{c}\left<u,u\right> \geq
+			\min\left\{\ushort{a},\ushort{c}\right\}\|u\|_{H^1}^2
 	\end{equation*}
-	so $\gamma = \ushort{a}+\ushort{c}$.
+	so $\gamma = \min\left\{\ushort{a},\ushort{c}\right\}$.
 	For the bounded condition,
 	\begin{equation*}
 		b(u,v) = \left<a\grad{u},\grad{v}\right> + \left<cu,v\right> \leq
@@ -154,9 +153,9 @@
 				and show whether $b$ satisfies the coercivity condition.
 		\end{enumerate}
 \NoIndent{
-	The variational form is find some $u \in H^1$
+	The variational form is find some $u \in H^1(\Omega)$
 	\begin{equation*}
-		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> + \int_{\partial\Omega}gv\d{S} \qquad \forall v \in H^1
+		\left<a\grad{u},\grad{v}\right> + \left<cu,v\right> = \left<f,v\right> + \int_{\partial\Omega}gv\d{S} \qquad \forall v \in H^1(\Omega)
 	\end{equation*}
 	The bilinear form $b$ is the same as in part (e) so the coercivity proven there still holds.
 }
@@ -247,6 +246,13 @@
 	This transformation can be explicitly written out in the affine mapping of
 	$\hat{I} = [0,1] \xrightarrow{\mathcal{F}} I = [a,b]$ as $\mathcal{F}(\hat{x}) = (b-a)x + a$.
 	Using this change of variables also allows integration over the reference element.
+	The degrees of freedom for this problem will consist of the values of $u_h$ and $u'_h$ at the points ${x_1,x_2,\dots,x_N}$.
+	Thus the local basis functions are actually the sum of the corresponding basis functions from each of the neighboring elements.
+	For example, denote $\phi_i$ as the basis function corresponding to the value of $u_h$ at $x_i$
+	(and $\tilde{\phi}_i$ as the basis function corresponding to the value of $u'_h$ at $x_i$),
+	then $\phi_i = \left.h_{01}\right|_{e_{i-1}} + \left.h_{00}\right|_{e_{i}}$
+	(and $\tilde{\phi}_i = \left.h_{11}\right|_{e_{i-1}} + \left.h_{10}\right|_{e_{i}}$),
+	where $e_i$ is the element living between $x_i$ and $x_{i+1}$.
 }
 			\item Derive the error estimate
 				\begin{equation*}
