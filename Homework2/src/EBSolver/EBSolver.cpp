@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include "Mesh1D.hpp"
+#include "Integrator.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -15,6 +16,19 @@ int main(int argc, char const *argv[])
 	std::ifstream infile(argv[1]);
 	infile >> input;
 	Mesh1D mesh(input["Mesh"]);
+	Integrator integrate(input["Integrator"]);
+	// for (auto const& value1 : integrate.b(mesh.getElement(0)))
+	// {
+	// 	for (auto const& value2 : value1)
+	// 	{
+	// 		std::cout << value2 << " ";
+	// 	}
+	// 	std::cout << std::endl;
+	// }
+	// for (auto const& value : integrate.l(mesh.getElement(0)))
+	// {
+	// 	std::cout << value << std::endl;
+	// }
 	std::ofstream outfile("test.json");
 	nlohmann::json output;
 	output["x"] = mesh.nodes();

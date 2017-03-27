@@ -7,7 +7,7 @@
 class Hermite
 {
 	public:
-		Hermite();
+		// Hermite();
 		~Hermite() = default;
 		std::array<double, 4> eval(double x);
 		std::array<double, 4> eval_d(double x);

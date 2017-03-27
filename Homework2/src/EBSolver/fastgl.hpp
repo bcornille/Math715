@@ -35,7 +35,7 @@ namespace fastgl {
 		double x() {return cos(theta)/2.0 + 0.5;}
 		
 		// A constructor
-		QuadPair(double t, double w) : theta(t), weight(w) {}
+		QuadPair(double t, double w) : theta(t), weight(w/2.0) {}
 		QuadPair() {}
 	};
 	
