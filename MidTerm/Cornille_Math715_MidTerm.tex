@@ -1,10 +1,128 @@
-\documentclass{article}
+\documentclass[10pt]{extarticle}
 
 \usepackage{myhw}
 \usepackage{mymacros}
+\usepackage{multicol}
 
-\lhead{<class>}
-\chead{<name>}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\lhead{Math 715}
+\chead{Mid-Term Cheat Sheet}
 
 \begin{document}
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item Classification of PDEs
+	\begin{enumerate}
+		\item 2nd-order linear equation in 2-dimensions
+		\begin{equation*}
+			a(x,y)\partial_{xx}u + 2b(x,y)\partial_{xy}u + c(x,y)\partial_{yy}y + \cdots = \cdots
+		\end{equation*}
+		\begin{enumerate}
+			\item $b^2 - ac < 0$ : elliptic region
+			\item $b^2 - ac > 0$ : hyperbolic region
+			\item $b^2 - ac = 0$ : parabolic region
+		\end{enumerate}
+		\item 2nd-order linear equation in higher dimension
+		\begin{equation*}
+			\sum a_{ij}\partial_{ij}u + \cdots = \cdots
+		\end{equation*}
+		\begin{enumerate}
+			\item $\det\left(\mat{A}\right) = 0$ : parabolic region
+			\item $\mat{A}$ positive definite : elliptic region
+			\item otherwise : hyperbolic
+		\end{enumerate}
+		\item Nonlinear equations
+		\begin{enumerate}
+			\item Linearization
+			\item Quasi-linear : principal order term is linear
+			\item Semi-linear
+			\begin{enumerate}
+				\item is quasi-linear
+				\item principal order coefficient has no dependence on lower orders
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+	\item Elliptic Equation
+	\begin{enumerate}
+		\item Laplace fundamental $\Delta\Phi = \delta$
+		\begin{equation*}
+			\Phi = \begin{cases}
+				-\frac{1}{2\pi}\ln{r} & n = 2 \\
+				\frac{1}{n(n-1)\alpha(n)}r^{2-n} & n \geq 3
+			\end{cases}
+		\end{equation*}
+		\item Poisson equation $\Delta u = f$
+		\begin{equation*}
+			u = \Phi * f
+		\end{equation*}
+	\end{enumerate}
+	\item Mean Value Theorem : $\Delta u = 0$ ($u$ is a harmonic function)
+	\begin{equation*}
+		\frac{1}{A}\int_{\partial B(x,r)}u(y)\d y = \frac{1}{V}\int_{B(x,r)}u(y)\d y
+	\end{equation*}
+	is a constant of $r$.
+	\item Maximum Principle : $\Delta u = 0$ (follows from Mean Value Theorem)
+	\begin{align*}
+		\max_{\Omega}u &= \max_{\partial\Omega}u \\
+		\min_{\Omega}u &= \min_{\partial\Omega}u
+	\end{align*}
+	\item Finite Differences
+	\begin{enumerate}
+		\item $\Delta_+ u = u_{i+1} - u_i$
+		\item $\Delta_- u = u_i - u_{i-1}$
+		\item $\Delta_0 u = u_{i+1} - u_{i-1}$
+		\item $\mathcal{E}u = u_{i+1}$ : $\partial_x = \frac{\ln\mathcal{E}}{h}$ can be used to get approximations
+	\end{enumerate}\
+	\item Fourier Method
+	\begin{enumerate}
+		\item Suppose $\phi_m = \sin(m\pi x)$, $m = 0,1,\dots$, $x \in [0,1]$
+		\item Plug into numerical scheme to find eigenvalues, $\lambda_m$ of numerical operator
+		\item $\left|\lambda_m\right| > \eta$ then $\|U\|_2^2 \leq \frac{1}{\eta^2}\|f\|_2^2$
+	\end{enumerate}
+	\item Fundamental Theorem : consistency + stability $\implies$ convergence
+	\item Finite Element Method
+	\begin{enumerate}
+		\item Variational Formultation
+		\begin{enumerate}
+			\item (D) : $\mathcal{L} u = f$, $\mathcal{B}u = g$
+			\item (M) : $u = \argmin_{v \in V}F[v]$, $F[v] = \frac{1}{2}b(v,v) - l(v)$
+			\item (V) : $b(u,v) = l(v)$, $\forall v \in V$
+			\item (D) $\iff$ (M) $\iff$ (V)
+		\end{enumerate}
+		\item Assumptions
+		\begin{enumerate}
+			\item $V$ is a Hilber Space with $\|\dot\|_V$ norm
+			\item $b$ is a bilinear operator
+			\begin{enumerate}
+				\item continuous/bounded : $b(u,v) \leq M\|u\|_V\|v\|_V$
+				\item coercive : $b(u,u) \geq \alpha\|u\|_V^2$
+			\end{enumerate}
+			\item $l$ is a linear operator
+			\begin{enumerate}
+				\item continuous/bounded : $l(u) \leq \Lambda\|u\|_V$
+			\end{enumerate}
+		\end{enumerate}
+		\item Lax-Milgram (existence) : $\left<Au,v\right> = \left<v,w\right>$
+		\begin{enumerate}
+			\item injective ($b$ coercive) : $\alpha\|u\| \leq \|Au\|$
+			\item surjective ($b$ coercive) : $\alpha\|z\|^2 \leq \left<Az,z\right> = 0$
+		\end{enumerate}
+		\item Conclusions
+		\begin{enumerate}
+			\item (V) has a unique solution : uses $b$ coercivity, $l$ continuity, Lax-Milgram for existence
+			\item  (M) $\iff$ (V)
+			\begin{enumerate}
+				\item $g(\epsilon) = F[u+\epsilon v]$, then $\left.\ddf{g}{\epsilon}\right|_{\epsilon=0} = 0$
+				\item (V) $\implies$ (M) : $F[u] \leq F[u + v]$
+			\end{enumerate}
+			\item (M\textsubscript{$h$}) $\iff$ (V\textsubscript{$h$})
+			\item $\mat{A}$ is positive definite
+			\item quasi-optimality : $\left\|u-u_h\right\|_V \leq \frac{M}{\alpha}\left\|u-v\right\|_V$
+		\end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+\end{multicols}
+
 \end{document}
