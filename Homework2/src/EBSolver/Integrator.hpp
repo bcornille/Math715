@@ -35,22 +35,22 @@ std::array<std::array<double, 4>, 4> Integrator::b(Element1D e)
 		std::array<double, 4> ud = u.eval_dd(gl[i].x());
 		double w = gl[i].weight;
 		double j = e.jacobian();
-		matrix[0][0] += ud[0]*ud[0]*w*j;
-		matrix[1][0] += ud[0]*ud[1]*w*j;
-		matrix[2][0] += ud[0]*ud[2]*w*j;
-		matrix[3][0] += ud[0]*ud[3]*w*j;
-		matrix[0][1] += ud[1]*ud[0]*w*j;
-		matrix[1][1] += ud[1]*ud[1]*w*j;
-		matrix[2][1] += ud[1]*ud[2]*w*j;
-		matrix[3][1] += ud[1]*ud[3]*w*j;
-		matrix[0][2] += ud[2]*ud[0]*w*j;
-		matrix[1][2] += ud[2]*ud[1]*w*j;
-		matrix[2][2] += ud[2]*ud[2]*w*j;
-		matrix[3][2] += ud[2]*ud[3]*w*j;
-		matrix[0][3] += ud[3]*ud[0]*w*j;
-		matrix[1][3] += ud[3]*ud[1]*w*j;
-		matrix[2][3] += ud[3]*ud[2]*w*j;
-		matrix[3][3] += ud[3]*ud[3]*w*j;
+		matrix[0][0] += ud[0]*ud[0]*w/pow(j,3);
+		matrix[1][0] += ud[0]*ud[1]*w/pow(j,2);
+		matrix[2][0] += ud[0]*ud[2]*w/pow(j,3);
+		matrix[3][0] += ud[0]*ud[3]*w/pow(j,2);
+		matrix[0][1] += ud[1]*ud[0]*w/pow(j,2);
+		matrix[1][1] += ud[1]*ud[1]*w/j;
+		matrix[2][1] += ud[1]*ud[2]*w/pow(j,2);
+		matrix[3][1] += ud[1]*ud[3]*w/j;
+		matrix[0][2] += ud[2]*ud[0]*w/pow(j,3);
+		matrix[1][2] += ud[2]*ud[1]*w/pow(j,2);
+		matrix[2][2] += ud[2]*ud[2]*w/pow(j,3);
+		matrix[3][2] += ud[2]*ud[3]*w/pow(j,2);
+		matrix[0][3] += ud[3]*ud[0]*w/pow(j,2);
+		matrix[1][3] += ud[3]*ud[1]*w/j;
+		matrix[2][3] += ud[3]*ud[2]*w/pow(j,2);
+		matrix[3][3] += ud[3]*ud[3]*w/j;
 	}
 	return matrix;
 }
