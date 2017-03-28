@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include "Mesh1D.hpp"
-#include "Integrator.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -29,6 +28,7 @@ int main(int argc, char const *argv[])
 	// {
 	// 	std::cout << value << std::endl;
 	// }
+	Eigen::SparseMatrix<double> delta_sq = mesh.assembleMatrix(integrate);
 	std::ofstream outfile("test.json");
 	nlohmann::json output;
 	output["x"] = mesh.nodes();
