@@ -15,6 +15,7 @@ class Mesh1D
 		std::vector<double> nodes();
 		Element1D getElement(int i);
 		Eigen::SparseMatrix<double> assembleMatrix(Integrator integrate);
+		Eigen::VectorXd assembleRHS(Integrator integrate);
 	private:
 		std::vector<double> x;
 		int N_el;
@@ -22,7 +23,7 @@ class Mesh1D
 };
 
 Mesh1D::Mesh1D(nlohmann::json params) :
-	N_node(params["N"]), N_el(N_node + 1), x(N_el + 1)
+	N_node((int)params["N"]), N_el((int)params["N"] + 1), x((int)params["N"] + 2)
 {
 	double deltax = (((double)params["x_max"] - (double)params["x_min"])
 		/(x.size() - 1));
@@ -72,13 +73,34 @@ Eigen::SparseMatrix<double> Mesh1D::assembleMatrix(Integrator integrate)
 		matrix.coeffRef(2*i,2*i+1) += minimatrix[2][3];
 		matrix.coeffRef(2*i+1,2*i+1) += minimatrix[3][3];
 	}
-	minimatrix = integrate.b(getElement(N_el));
-	matrix.coeffRef(2*N_node,2*N_node) += minimatrix[0][0];
-	matrix.coeffRef(2*N_node,2*N_node+1) += minimatrix[0][1];
-	matrix.coeffRef(2*N_node+1,2*N_node) += minimatrix[1][0];
-	matrix.coeffRef(2*N_node+1,2*N_node+1) += minimatrix[1][1];
+	minimatrix = integrate.b(getElement(N_el - 1));
+	matrix.coeffRef(2*N_node-2,2*N_node-2) += minimatrix[0][0];
+	matrix.coeffRef(2*N_node-2,2*N_node-1) += minimatrix[0][1];
+	matrix.coeffRef(2*N_node-1,2*N_node-2) += minimatrix[1][0];
+	matrix.coeffRef(2*N_node-1,2*N_node-1) += minimatrix[1][1];
 	matrix.makeCompressed();
 	return matrix;
+}
+
+Eigen::VectorXd Mesh1D::assembleRHS(Integrator integrate)
+{
+	Eigen::VectorXd rhs(2*N_node);
+	rhs.setZero();
+	std::array<double, 4> minirhs = integrate.l(getElement(0));
+	rhs[0] += minirhs[2];
+	rhs[1] += minirhs[3];
+	for (int i = 1; i < N_el - 1; ++i)
+	{
+		minirhs = integrate.l(getElement(i));
+		rhs[2*i-2] += minirhs[0];
+		rhs[2*i-1] += minirhs[1];
+		rhs[2*i] += minirhs[2];
+		rhs[2*i+1] += minirhs[3];
+	}
+	minirhs = integrate.l(getElement(N_el - 1));
+	rhs[2*N_node-2] += minirhs[0];
+	rhs[2*N_node-1] += minirhs[1];
+	return rhs;
 }
 
 #endif

@@ -16,22 +16,38 @@ int main(int argc, char const *argv[])
 	infile >> input;
 	Mesh1D mesh(input["Mesh"]);
 	Integrator integrate(input["Integrator"]);
-	// for (auto const& value1 : integrate.b(mesh.getElement(0)))
-	// {
-	// 	for (auto const& value2 : value1)
-	// 	{
-	// 		std::cout << value2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-	// for (auto const& value : integrate.l(mesh.getElement(0)))
-	// {
-	// 	std::cout << value << std::endl;
-	// }
+	for (auto const& value1 : integrate.b(mesh.getElement(1)))
+	{
+		for (auto const& value2 : value1)
+		{
+			std::cout << value2 << " ";
+		}
+		std::cout << std::endl;
+	}
+	for (auto const& value : integrate.l(mesh.getElement(1)))
+	{
+		std::cout << value << std::endl;
+	}
+	Eigen::SimplicialLLT<Eigen::SparseMatrix<double> > solver;
 	Eigen::SparseMatrix<double> delta_sq = mesh.assembleMatrix(integrate);
+	std::cout << delta_sq << std::endl;
+	solver.analyzePattern(delta_sq);
+	solver.factorize(delta_sq);
+	Eigen::VectorXd b = mesh.assembleRHS(integrate);
+	std::cout << b << std::endl;
+	Eigen::VectorXd x =solver.solve(b);
+	std::cout << x << std::endl;
+	std::vector<double> u((int)input["Mesh"]["N"]+2);
+	u[0] = 0.0;
+	for (int i = 1; i < u.size() - 1; ++i)
+	{
+		u[i] = x[2*i-2];
+	}
+	u[u.size()-1] = 1.0;
 	std::ofstream outfile("test.json");
 	nlohmann::json output;
 	output["x"] = mesh.nodes();
+	output["u"] = u;
 	outfile << std::setw(4) << output << std::endl;
 	return 0;
 }
