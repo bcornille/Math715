@@ -24,10 +24,10 @@ std::array<std::array<double, 4>, 4> Integrator::b(Element1D e)
 {
 	std::array<std::array<double, 4>, 4> matrix = {0.0};
 	Hermite u;
-	for (int i = 0; i < gl.size(); ++i)
+	for (int i = 0; i < gl.getN(); ++i)
 	{
-		std::array<double, 4> ud = u.eval_dd(gl.getNode(i));
-		double w = gl.getWeight(i);
+		std::array<double, 4> ud = u.eval_dd(gl.getNode(i)/2.0 + 0.5);
+		double w = gl.getWeight(i)/2.0;
 		double j = e.jacobian();
 		matrix[0][0] += ud[0]*ud[0]*w/pow(j,3);
 		matrix[1][0] += ud[0]*ud[1]*w/pow(j,2);
@@ -53,10 +53,10 @@ std::array<double, 4> Integrator::l(Element1D e)
 {
 	std::array<double, 4> rhs = {0.0};
 	Hermite v;
-	for (int i = 0; i < gl.size(); ++i)
+	for (int i = 0; i < gl.getN(); ++i)
 	{
-		double w = gl.getWeight(i);
-		double x_hat = gl.getNode(i);
+		double w = gl.getWeight(i)/2.0;
+		double x_hat = gl.getNode(i)/2.0 + 0.5;
 		double j = e.jacobian();
 		double x = e.f(x_hat);
 		double c = exp(x)*(pow(x,4) + 14.0*pow(x,3) + 49.0*pow(x,2) + 32.0*x - 12.0);
