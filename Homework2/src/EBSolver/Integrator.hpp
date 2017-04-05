@@ -1,4 +1,4 @@
-#include "fastgl.hpp"
+#include "Basis1D.hpp"
 #include "Hermite.hpp"
 #include <array>
 #include <cmath>
@@ -15,16 +15,10 @@ class Integrator
 		std::array<std::array<double, 4>, 4> b(Element1D e);
 		std::array<double, 4> l(Element1D e);
 	private:
-		std::vector<fastgl::QuadPair> gl;
+		GaussLegendre gl;
 };
 
-Integrator::Integrator(nlohmann::json params) : gl((int)params["N"])
-{
-	for (int i = 0; i < gl.size(); ++i)
-	{
-		gl[i] = fastgl::GLPair(gl.size(), i + 1);
-	}
-}
+Integrator::Integrator(nlohmann::json params) : gl((int)params["N"]) {}
 
 std::array<std::array<double, 4>, 4> Integrator::b(Element1D e)
 {
@@ -32,8 +26,8 @@ std::array<std::array<double, 4>, 4> Integrator::b(Element1D e)
 	Hermite u;
 	for (int i = 0; i < gl.size(); ++i)
 	{
-		std::array<double, 4> ud = u.eval_dd(gl[i].x());
-		double w = gl[i].weight;
+		std::array<double, 4> ud = u.eval_dd(gl.getNode(i));
+		double w = gl.getWeight(i);
 		double j = e.jacobian();
 		matrix[0][0] += ud[0]*ud[0]*w/pow(j,3);
 		matrix[1][0] += ud[0]*ud[1]*w/pow(j,2);
@@ -61,8 +55,8 @@ std::array<double, 4> Integrator::l(Element1D e)
 	Hermite v;
 	for (int i = 0; i < gl.size(); ++i)
 	{
-		double w = gl[i].weight;
-		double x_hat = gl[i].x();
+		double w = gl.getWeight(i);
+		double x_hat = gl.getNode(i);
 		double j = e.jacobian();
 		double x = e.f(x_hat);
 		double c = exp(x)*(pow(x,4) + 14.0*pow(x,3) + 49.0*pow(x,2) + 32.0*x - 12.0);
