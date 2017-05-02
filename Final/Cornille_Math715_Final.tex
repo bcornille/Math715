@@ -1,0 +1,25 @@
+\documentclass[10pt]{extarticle}
+
+\usepackage{myhw}
+\usepackage{mymacros}
+\usepackage{multicol}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\lhead{Math 715}
+\chead{Final Cheat Sheet}
+
+\begin{document}
+
+\begin{minipage}[t][0.5\textheight][t]{\textwidth}
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $\min\phi$ where $\phi(u)=\frac{1}{2}u^TAu-b^Tu$ $\xLeftrightarrow{A \text{ p.d.}}$ $Au=b$
+	\begin{enumerate}
+		\item $\min\phi \iff \grad_u\phi=0=Au-b$
+	\end{enumerate}
+\end{enumerate}
+\end{multicols}
+\end{minipage}
+
+\end{document}
