@@ -5,6 +5,8 @@
 \usepackage{multicol}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\cond}{cond}
+\DeclareMathOperator*{\Span}{span}
 
 \lhead{Math 715}
 \chead{Final Cheat Sheet}
@@ -14,10 +16,72 @@
 \begin{minipage}[t][0.5\textheight][t]{\textwidth}
 \begin{multicols}{2}
 \begin{enumerate}
-	\item $\min\phi$ where $\phi(u)=\frac{1}{2}u^TAu-b^Tu$ $\xLeftrightarrow{A \text{ p.d.}}$ $Au=b$
+	\item Matrix Splitting Methods
 	\begin{enumerate}
-		\item $\min\phi \iff \grad_u\phi=0=Au-b$
+		\item $A \to M - N$
+		\item $u^{n+1} = M^{-1}Nu^n + M^{-1}f$
+		\item Convergence based on $\left|\rho\left(M^{-1}N\right)\right|$
+		\item Jacobi: $M$ is diagonal part of $A$
+		\item Gauss-Seidel: $M$ is lower triangular part of $A$
 	\end{enumerate}
+	\item Steepest Descent Method
+	\begin{enumerate}
+		\item $\min\phi$ where $\phi(u)=\frac{1}{2}u^TAu-b^Tu$
+			$\xLeftrightarrow{A \text{ p.d.}}$ $Au=b$
+		\begin{enumerate}
+			\item $\min\phi \iff \grad_u\phi=0=Au-b$
+		\end{enumerate}
+		\item Algorithm:
+			\begin{align*}
+				r_k &= Au_k - b \\
+				u_{k+1} &= u_k + \alpha_k r_k
+			\end{align*}
+		\item $\alpha_k = -\frac{r_k^Tr_k}{r_k^TAp_k}$
+		\item convergence $\sim \kappa \equiv \cond(A)$
+	\end{enumerate}
+	\item Krylov Space
+	\begin{enumerate}
+		\item $\Span\left\{p_0,\dots,p_{k-1}\right\}
+			= \Span\left\{r_0,\dots,A^{k-1}r_0\right\}
+			= \Span\left\{Ae_0,\dots,A^ke_0\right\}$
+		\begin{enumerate}
+			\item $\Span\left\{p_0,p_1,\dots,p_{k-1}\right\}
+				= \Span\left\{r_0,r_1,\dots,r_{k-1}\right\}
+				= \Span\left\{r_0,Ap_0,\dots,Ap_{k-2}\right\}$
+		\end{enumerate}
+		\item $r_i^Tr_j = 0$ for $i \neq j$
+		\begin{enumerate}
+			\item assume $r_{k-1}^Tr_j = 0$ for $j = 0,\dots,k-2$
+			\item leads to alternative form of $\alpha_k$
+			\item used to get better $c_j^{(k)}$
+		\end{enumerate}
+	\end{enumerate}
+	\item Conjugate Gradient Method
+	\begin{enumerate}
+		\item Algorithm:
+			\begin{align*}
+				p_k &= r_k + \sum_{j=0}^{k-1}c_j^{(k)}p_j \\
+				u_{k+1} &= u_k + \alpha_k p_k \\
+				r_{k+1} &= r_k + \alpha_k A p_k
+			\end{align*}
+		\item $\alpha_k = -\frac{p_k^Tr_k}{p_k^TAp_k} = -\frac{r_k^Tr_k}{r_k^TAp_k}$
+		\item $c_j^{(k)} = -\frac{r_k^TAp_j}{p_j^TAp_j} = \begin{cases}
+				0 & j < k-1 \\
+				\frac{r_k^Tr_k}{r_{k-1}^Tr_{k-1}} & j = k-1
+			\end{cases}$
+		\item convergence $\sim \frac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}$
+	\end{enumerate}
+	% \item GMRES
+	% \begin{enumerate}
+	% 	\item Algorithm:
+	% 		\begin{align*}
+	% 			&v = Aq_k && \\
+	% 			&\text{for } j = 1,\dots,k && h_{j,k} = q_k^Tv \\
+	% 			&&& v = v - h_{j,k}q_j \\
+	% 			&h_{k+1,k} = \|v\| && \\
+	% 			&q_{k+1} = \frac{v}{h_{k+1,k}} &&
+	% 		\end{align*}
+	% \end{enumerate}
 \end{enumerate}
 \end{multicols}
 \end{minipage}
